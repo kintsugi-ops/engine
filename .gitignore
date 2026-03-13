@@ -1,0 +1,24 @@
+# 의존성
+node_modules/
+
+# 빌드 결과물
+dist/
+
+# 환경 변수 (절대 커밋하면 안 됨)
+.env
+.env.local
+.env.*.local
+
+# 소스맵
+*.js.map
+
+# macOS
+.DS_Store
+
+# 에디터
+.vscode/
+.idea/
+
+# 로그
+*.log
+npm-debug.log*
