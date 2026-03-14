@@ -99,7 +99,7 @@ engine.run(sentryPayload)
 | CLI 인자 파싱 | commander | 경량 CLI 유틸리티 |
 | 런타임 검증 | zod | 환경변수 & webhook payload 런타임 타입 보장 |
 | 에러 모니터링 | Sentry Webhook (확장 가능) | 스펙 기반으로 파싱, 다른 도구도 추가 가능 |
-| 알림 | Slack Webhook (확장 가능) | fetch로 충분, 별도 SDK 불필요 |
+| 알림 | Slack / Discord Webhook (확장 가능) | fetch로 충분, 별도 SDK 불필요 |
 
 웹 프레임워크 없음 — HTTP 서버를 띄우지 않으므로 불필요.
 
@@ -122,7 +122,8 @@ ErrorMonitoringProvider (interface)
   └── SentryProvider
 
 NotificationProvider (interface)
-  └── SlackProvider
+  ├── SlackNotifier
+  └── DiscordNotifier
 ```
 
 ### 의존성 방향
@@ -165,7 +166,8 @@ kintsugi-ops/
 │   │   │   └── sentry.ts
 │   │   ├── notification/
 │   │   │   ├── provider.interface.ts # NotificationProvider 인터페이스
-│   │   │   └── slack.ts
+│   │   │   ├── slack.ts
+│   │   │   └── discord.ts
 │   │   └── github/
 │   │       └── client.ts             # Octokit 래퍼 (파일 읽기, 브랜치/PR 생성)
 │   ├── core/
@@ -222,8 +224,8 @@ kintsugi-ops/
 4. ✅ Sentry 어댑터 — `src/integrations/error-monitoring/sentry.ts`
 5. ✅ GitHub client — `src/integrations/github/client.ts`
 6. ✅ AI 어댑터 3개 — Claude, OpenAI, Gemini + 공유 프롬프트/파서
-7. 핵심 오케스트레이션 — `src/core/engine.ts` (EngineConfig 포함)
-8. GitHub Actions workflow + `action.yml`
+7. ✅ 핵심 오케스트레이션 — `src/core/engine.ts` (EngineConfig 포함)
+8. ✅ GitHub Actions workflow + `action.yml` + Slack/Discord 알림
 9. CLI 진입점 — `src/cli/index.ts`
 
 ---

@@ -18,9 +18,12 @@ interface NotificationProvider {
 
 ## 현재 구현체
 
-아직 없음. `slack.ts` 구현 예정.
+| 파일 | 설명 |
+|------|------|
+| `slack.ts` | Slack Block Kit 포맷으로 webhook POST |
+| `discord.ts` | Discord embed 포맷으로 webhook POST |
 
-Slack은 webhook URL로 POST 요청만 보내면 되므로 별도 SDK 불필요 (`fetch` 사용).
+둘 다 `fetch`만 사용. 별도 SDK 불필요.
 
 ## 새 알림 도구 추가 방법
 

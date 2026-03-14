@@ -1,0 +1,32 @@
+name: 'Kintsugi Ops Engine'
+description: 'Self-healing engine that automatically analyzes errors and creates fix PRs'
+author: 'kintsugi-ops'
+
+inputs:
+  ai-provider:
+    description: 'AI provider to use (claude, openai, gemini)'
+    required: true
+    default: 'claude'
+  ai-api-key:
+    description: 'API key for the selected AI provider'
+    required: true
+  ai-model:
+    description: 'AI model name (optional, uses provider default if not set)'
+    required: false
+  github-token:
+    description: 'GitHub token for creating branches and PRs'
+    required: true
+  slack-webhook-url:
+    description: 'Slack webhook URL for notifications (optional)'
+    required: false
+  discord-webhook-url:
+    description: 'Discord webhook URL for notifications (optional)'
+    required: false
+
+runs:
+  using: 'node22'
+  main: 'dist/action/index.js'
+
+branding:
+  icon: 'shield'
+  color: 'orange'

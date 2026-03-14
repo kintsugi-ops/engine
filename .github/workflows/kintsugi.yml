@@ -1,0 +1,23 @@
+name: Kintsugi Ops — Self Healing
+
+on:
+  repository_dispatch:
+    types: [sentry-error]
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: kintsugi-ops/engine@v1
+        with:
+          ai-provider: ${{ inputs.ai-provider || 'claude' }}
+          ai-api-key: ${{ secrets.AI_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
