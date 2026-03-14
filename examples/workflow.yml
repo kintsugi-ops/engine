@@ -1,0 +1,40 @@
+# Copy this file to your repo's .github/workflows/kintsugi.yml
+#
+# Prerequisites:
+#   1. Set up repository secrets: AI_API_KEY, SLACK_WEBHOOK_URL (optional), DISCORD_WEBHOOK_URL (optional)
+#   2. Deploy a webhook relay (Cloudflare Worker / AWS Lambda) that receives
+#      Sentry error webhooks and triggers GitHub repository_dispatch with type "sentry-error"
+
+name: Kintsugi Ops — Self Healing
+
+on:
+  repository_dispatch:
+    types: [sentry-error]
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: kintsugi-ops/engine@v1
+        with:
+          # AI provider: claude (default), openai, or gemini
+          ai-provider: claude
+
+          # API key for the selected AI provider
+          ai-api-key: ${{ secrets.AI_API_KEY }}
+
+          # GitHub token (automatically available in Actions)
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Optional: AI model override (uses provider default if omitted)
+          # ai-model: claude-sonnet-4-20250514
+
+          # Optional: notification webhooks
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
