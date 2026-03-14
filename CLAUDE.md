@@ -174,7 +174,9 @@ kintsugi-ops/
 │   │   └── engine.ts                 # 오케스트레이션 로직 + EngineConfig 정의
 │   ├── cli/
 │   │   └── index.ts                  # CLI 진입점 (commander)
-│   └── index.ts                      # npm 패키지 공개 진입점 (export 모음)
+│   ├── action/
+│   │   └── index.ts                  # GitHub Actions 진입점 (INPUT_* 환경변수)
+│   └── index.ts                      # npm 패키지 공개 진입점 (barrel export)
 ├── .github/
 │   └── workflows/
 │       └── kintsugi.yml              # GitHub Actions workflow
@@ -226,12 +228,12 @@ kintsugi-ops/
 6. ✅ AI 어댑터 3개 — Claude, OpenAI, Gemini + 공유 프롬프트/파서
 7. ✅ 핵심 오케스트레이션 — `src/core/engine.ts` (EngineConfig 포함)
 8. ✅ GitHub Actions workflow + `action.yml` + Slack/Discord 알림
-9. CLI 진입점 — `src/cli/index.ts`
+9. ✅ 진입점 3개 — `src/cli/index.ts`, `src/action/index.ts`, `src/index.ts`
 
 ---
 
 ## Phase 로드맵
 
-- **Phase 1** (현재): AI 분석 + PR 생성 + Slack 알림
+- **Phase 1** (현재): AI 분석 + PR 생성 + Slack/Discord 알림 — ✅ 구현 완료
 - **Phase 2**: Auto-Rollback — 에러 급증 시 이전 버전 즉시 롤백
 - **Phase 3**: Fully Autonomous — Staging 검증 후 자동 운영 배포
