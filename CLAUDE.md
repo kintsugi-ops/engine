@@ -52,11 +52,11 @@ npm install kintsugi-ops @google/genai       # Gemini 사용 시
 ```
 
 ```typescript
-import { KintsugiEngine, ClaudeProvider, SentryParser, SlackNotifier } from 'kintsugi-ops'
+import { KintsugiEngine, ClaudeProvider, SentryProvider, SlackNotifier } from 'kintsugi-ops'
 
 const engine = new KintsugiEngine({
   ai: new ClaudeProvider({ apiKey: process.env.ANTHROPIC_API_KEY }),
-  errorMonitoring: new SentryParser(),
+  errorMonitoring: new SentryProvider(),
   notification: new SlackNotifier({ webhookUrl: process.env.SLACK_WEBHOOK_URL }),
   github: { token: process.env.GITHUB_TOKEN, owner: 'myorg', repo: 'myrepo' }
 })
@@ -154,7 +154,9 @@ kintsugi-ops/
 │   │   └── index.ts                 # barrel re-export
 │   ├── integrations/
 │   │   ├── ai/
-│   │   │   ├── provider.interface.ts # AIProvider 인터페이스
+│   │   │   ├── provider.interface.ts # AIProvider 인터페이스 (analyzeError + generateFix)
+│   │   │   ├── prompts.ts            # 공유 프롬프트 템플릿
+│   │   │   ├── response-parser.ts    # AI 응답 JSON 파싱 + zod 검증
 │   │   │   ├── claude.ts
 │   │   │   ├── openai.ts
 │   │   │   └── gemini.ts
@@ -217,9 +219,9 @@ kintsugi-ops/
 1. ✅ 프로젝트 초기 세팅 — `package.json`, `tsconfig.json`, 디렉토리 구조
 2. ✅ 타입 정의 — `src/types/` (도메인별 분리)
 3. ✅ 인터페이스 정의 — `provider.interface.ts` (ai, error-monitoring, notification)
-4. Sentry 어댑터 — `src/integrations/error-monitoring/sentry.ts`
-5. GitHub client — `src/integrations/github/client.ts`
-6. AI 어댑터 3개 — Claude → OpenAI → Gemini
+4. ✅ Sentry 어댑터 — `src/integrations/error-monitoring/sentry.ts`
+5. ✅ GitHub client — `src/integrations/github/client.ts`
+6. ✅ AI 어댑터 3개 — Claude, OpenAI, Gemini + 공유 프롬프트/파서
 7. 핵심 오케스트레이션 — `src/core/engine.ts` (EngineConfig 포함)
 8. GitHub Actions workflow + `action.yml`
 9. CLI 진입점 — `src/cli/index.ts`
